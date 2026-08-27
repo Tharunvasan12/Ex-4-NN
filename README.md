@@ -1,8 +1,8 @@
 
-<H3>ENTER YOUR NAME</H3>
-<H3>ENTER YOUR REGISTER NO.</H3>
+<H3>NAME : THARUNISH VASAN T</H3>
+<H3>REGISTER No : 212224240174</H3>
 <H3>EX. NO.4</H3>
-<H3>DATE:</H3>
+<H3>DATE: 21.08.26</H3>
 <H1 ALIGN =CENTER>Implementation of MLP with Backpropagation for Multiclassification</H1>
 <H3>Aim:</H3>
 To implement a Multilayer Perceptron for Multi classification
@@ -116,11 +116,63 @@ Normalize our dataset.
 
 <H3>Program:</H3> 
 
-Insert your code here
+~~~
+
+import pandas as pd
+import sklearn
+from sklearn import preprocessing
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler,LabelEncoder
+from sklearn.neural_network import MLPClassifier
+from sklearn.metrics import classification_report, confusion_matrix, accuracy_score,precision_score, recall_score, f1_score
+df = pd.read_csv("penguins.csv") 
+df.dropna(inplace=True)
+label=LabelEncoder()
+for i in df.columns:
+    df[i] = label.fit_transform(df[i])
+x=df.iloc[:,1:]
+y=df.iloc[:,0]
+x_train,x_test,y_train,y_test = train_test_split(x,y,test_size = 0.2,random_state = 42)
+scaler = StandardScaler()
+x_train = scaler.fit_transform(x_train)
+x_test = scaler.transform(x_test)
+
+model = MLPClassifier(hidden_layer_sizes = (4,7), max_iter = 1000)
+model.fit(x_train,y_train)
+predict = model.predict(x_test)
+print("-----------------------")
+cm = confusion_matrix(y_test, predict)
+print("Confusion Matrix:")
+print(cm)
+
+print("\nClassification Report:")
+print(classification_report(y_test, predict))
+
+print("Accuracy:", accuracy_score(y_test, predict))
+print("Precision:", precision_score(y_test, predict, average='weighted'))
+print("Recall:", recall_score(y_test, predict, average='weighted'))
+print("F1 Score:", f1_score(y_test, predict, average='weighted'))
+print("-----------------------")
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+plt.figure(figsize=(6,4))
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.title("Confusion Matrix")
+plt.show()
+
+~~~
 
 <H3>Output:</H3>
 
-Show your results here
+
+<img width="645" height="485" alt="image" src="https://github.com/user-attachments/assets/99d061aa-0b32-4020-a5f6-4f18da42ed91" />
+<img width="627" height="495" alt="image" src="https://github.com/user-attachments/assets/3554a390-dcc5-4f0c-99b7-f17cd5ef5628" />
+
+
 
 <H3>Result:</H3>
 Thus, MLP is implemented for multi-classification using python.
